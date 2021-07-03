@@ -31,11 +31,9 @@ stayornot <- apply(faddata,1,cleaning01) # res==0 --> any NA| case with duplicat
 table(stayornot)
 
 stayMARKEDall <- cbind(testdata,stayornot)
-head(stayMARKEDall)
 cleanall <- stayMARKEDall[which(stayornot==1),]
-head(cleanall)
 not <- stayMARKEDall[which(stayornot==0),] #recheck cases with duplicated or NA
-head(not)
+
 cleanfad <- cleanall[,fadnames]
 
 length(cleanall[,1])
@@ -55,7 +53,6 @@ FADScores <- function(v){
 
 fadscores <- t(apply(cleanfad, 1, FADScores)) #calculate the 4 dimensions´ scores
 colnames(fadscores) <- c("FD","SD","UP","FW")
-head(fadscores)
 cleanfadscores <- cbind(fadscores,cleanfad)
 head(cleanfadscores)
 

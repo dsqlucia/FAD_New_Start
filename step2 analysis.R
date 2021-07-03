@@ -10,21 +10,17 @@ library("semTools")
 
 
 datafadall <- read.csv("cleanfadall.csv")
-head(datafadall)
 datafadchina <- datafadall[which(datafadall$g==0),-1] 
 datafadforeign <- datafadall[which(datafadall$g==1),-1] 
-head(datafadchina)
-head(datafadforeign)
+
 
 desdatachina <- datafadchina[,1:4] #descriptions of chinese datasets
 apply(desdatachina, 2, psych::describe)
 apply(desdatachina, 2, table)
-head(desdatachina)
 
 desdataforeign <- datafadforeign[,1:4] #descriptions of foriegn datasets
 apply(desdataforeign, 2, psych::describe)
 apply(desdataforeign, 2, table)
-head(desdataforeign)
 
 ########################################
 ########################################
@@ -62,8 +58,10 @@ fadforeignlist <- list(fadFDF,fadSDF,fadUPF,fadFWF)
 
 
 resctt <- CTT::reliability(fadchinasolo)
-str(resctt) #alpha china ==0.759
-psych::alpha(fadchinasolo) #FW12 may be reversed FW12:只要真心想做，人们可以克服一切困难
+str(resctt) #alpha china ==0.758
+psych::alpha(fadchinasolo) 
+#psych::alpha(fadchinasolo,check.keys=TRUE) #FW12 may be reversed FW12:只要真心想做，人们可以克服一切困难
+
 psych::omega(fadchinasolo)
 
 reschinactt <- lapply(fadchinalist,CTT::reliability)
@@ -247,15 +245,12 @@ round(resPA2FOREIGN,3)
 #######################################
 ############ CORRELATION ##############
 ############ with BIG 5 ###############
-####### base on Qinglan & FAD_2 #######
 #######################################
 #######################################
 
 BFI_NAlocated <- which(is.na(datafadall[,"BFI_A1"]))
 forBFI_FAD <- datafadall[-BFI_NAlocated,]
-length(forBFI_FAD[,1])
 FAD_BFI <- forBFI_FAD[,c("FD","SD","UP","FW",fadnames)]
-length(FAD_BFI[,1])
 
 BFIS <- function(datos,nombre,key){
   databfi <- datos[,nombre]
@@ -301,6 +296,35 @@ corBFI_FAD[which(abs(corBFI_FAD)<1 & abs(corBFI_FAD)>0.6)]
 corBFI_FAD27 <- cor(BFI_FAD_Final[,-c(6,7,8,9)])
 corBFI_FAD27[which(abs(corBFI_FAD27)<1 & abs(corBFI_FAD27)>0.6)] #FAD1-9
 
+#######################################
+#######################################
+############ CORRELATION ##############
+############ with MLOC ################
+#######################################
+#######################################
+
+MLOC_NAlocated <- which(is.na(datafadall[,"MLOC1"]))
+forMLOC_FAD <- datafadall[-MLOC_NAlocated,]
+FAD_MLOC <- forMLOC_FAD[,c("FD","SD","UP","FW",fadnames)]
+
+MLOC_INames <- c("MLOC1","MLOC4","MLOC5","MLOC9","MLOC18","MLOC19","MLOC21","MLOC23")
+MLOC_I <- apply(forMLOC_FAD[,MLOC_INames]+3,1,sum)
+
+MLOC_PNames <- c("MLOC3","MLOC8","MLOC11","MLOC13","MLOC15","MLOC17","MLOC20","MLOC22")
+MLOC_P <- apply(forMLOC_FAD[,MLOC_PNames]+3,1,sum)
+
+
+MLOC_CNames <- c("MLOC2","MLOC6","MLOC7","MLOC10","MLOC12","MLOC14","MLOC16","MLOC24")
+MLOC_C <- apply(forMLOC_FAD[,MLOC_CNames]+3,1,sum) 
+
+MLOCS <- cbind(MLOC_I,MLOC_P,MLOC_C)
+
+MLOC_FAD_Final <- cbind(MLOCS,FAD_MLOC)
+corMLOC_FAD <- cor(MLOC_FAD_Final[,1:7])
+corMLOC_FAD[which(abs(corMLOC_FAD)<1 & abs(corMLOC_FAD)>0.6)] #low correlations bewteen MLOC & FAD; buuuuut, noted MLOC_P*MLOC_C
+
+corMLOC_FAD27 <- cor(MLOC_FAD_Final[,-c(4,5,6,7)])
+corMLOC_FAD27[which(abs(corMLOC_FAD27)<1 & abs(corMLOC_FAD27)>0.6)]
 
 ###########################
 ###########################
