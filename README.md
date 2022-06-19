@@ -2,10 +2,10 @@ FAD_New_Start
 This is the Chinese version of FAD_Plus new repo.
 
 CODE:
-Step 0: data merge from original dataset;
-Step 1: cleaning data & calcultions of FAD_Plus scores;
-Step 2: basic analysis code
+STEP0: data merge from original dataset;
+STEP1: cleaning data, calcultions of FAD_Plus scores & basic analysis;
+STEPirt: analysis of IRT
 
 FILE:
 "DATA" - original datasets;
-"SAVE point" - cleaned data; only FAD_Plus related dataset; results tables
+"SAVE point" - cleaned datasets; results tables
